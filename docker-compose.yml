@@ -1,0 +1,24 @@
+services:
+  ip-tracker:
+    build: .
+    container_name: ip-tracker-go-turso
+    restart: unless-stopped
+    user: "1000:1000"
+    ports:
+      - "8484:8484"
+    environment:
+      # --- REQUIRED ---
+      - APP_USERNAME=${APP_USERNAME}
+      - APP_PASSWORD=${APP_PASSWORD}
+      - APP_PORT=${APP_PORT:-8080}
+
+      # --- Turso Database ---
+      # Get this from your Turso dashboard
+      - TURSO_DB_URL=${TURSO_DB_URL}
+      # Generate this with the Turso CLI: `turso db tokens create your-database-name`
+      - TURSO_AUTH_TOKEN=${TURSO_AUTH_TOKEN}
+
+      # --- OPTIONAL: For Email Notifications ---
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - NOTIFY_EMAIL_TO=${NOTIFY_EMAIL_TO}
+      - NOTIFY_EMAIL_FROM=${NOTIFY_EMAIL_FROM}
